@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Tiny Home Ultimate Mega Calculator</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+h2{
+    margin-top:40px;
+    border-bottom:1px solid #ddd;
+    padding-bottom:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+input,select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    margin-top:30px;
+    background:#222;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#444;
+}
+
+.results{
+    margin-top:40px;
+    background:#fafafa;
+    padding:20px;
+    border-radius:10px;
+}
+
+.result-item{
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+.warning{
+    color:red;
+    font-weight:bold;
+}
+
+.good{
+    color:green;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Tiny Home Ultimate Mega Calculator</h1>
+
+<div class="grid">
+
+<div class="field">
+<label>Tiny Home Cost ($)</label>
+<input type="number" id="homeCost" value="60000">
+</div>
+
+<div class="field">
+<label>Land Cost ($)</label>
+<input type="number" id="landCost" value="30000">
+</div>
+
+<div class="field">
+<label>Utility Hookups ($)</label>
+<input type="number" id="utilityCost" value="15000">
+</div>
+
+<div class="field">
+<label>Solar System Cost ($)</label>
+<input type="number" id="solarCost" value="12000">
+</div>
+
+<div class="field">
+<label>Battery Backup Cost ($)</label>
+<input type="number" id="batteryCost" value="7000">
+</div>
+
+<div class="field">
+<label>Septic System Cost ($)</label>
+<input type="number" id="septicCost" value="8000">
+</div>
+
+<div class="field">
+<label>Insurance Per Year ($)</label>
+<input type="number" id="insuranceCost" value="1500">
+</div>
+
+<div class="field">
+<label>Moving / Delivery Cost ($)</label>
+<input type="number" id="movingCost" value="5000">
+</div>
+
+<div class="field">
+<label>Monthly Utilities ($)</label>
+<input type="number" id="monthlyUtilities" value="250">
+</div>
+
+<div class="field">
+<label>Down Payment (%)</label>
+<input type="number" id="downPayment" value="10">
+</div>
+
+<div class="field">
+<label>Interest Rate (%)</label>
+<input type="number" id="interestRate" value="7">
+</div>
+
+<div class="field">
+<label>Loan Length (Years)</label>
+<input type="number" id="loanYears" value="20">
+</div>
+
+<div class="field">
+<label>Square Footage</label>
+<input type="number" id="squareFeet" value="400">
+</div>
+
+<div class="field">
+<label>Estimated Monthly Airbnb Income ($)</label>
+<input type="number" id="airbnbIncome" value="1800">
+</div>
+
+<div class="field">
+<label>Occupancy Rate (%)</label>
+<input type="number" id="occupancyRate" value="70">
+</div>
+
+<div class="field">
+<label>State</label>
+<select id="state">
+<option value="easy">Texas</option>
+<option value="medium">Oklahoma</option>
+<option value="hard">California</option>
+<option value="medium">Florida</option>
+<option value="easy">Tennessee</option>
+</select>
+</div>
+
+</div>
+
+<button onclick="calculateEverything()">
+Calculate Everything
+</button>
+
+<div class="results">
+
+<h2>Results</h2>
+
+<div class="result-item" id="totalProject"></div>
+<div class="result-item" id="loanAmount"></div>
+<div class="result-item" id="monthlyPayment"></div>
+<div class="result-item" id="monthlyOperating"></div>
+<div class="result-item" id="yearlyIncome"></div>
+<div class="result-item" id="cashFlow"></div>
+<div class="result-item" id="roiEstimate"></div>
+<div class="result-item" id="pricePerFoot"></div>
+<div class="result-item" id="solarRecommendation"></div>
+<div class="result-item" id="zoningMessage"></div>
+<div class="result-item" id="affordability"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function calculateEverything(){
+
+    let homeCost = parseFloat(document.getElementById('homeCost').value) || 0;
+    let landCost = parseFloat(document.getElementById('landCost').value) || 0;
+    let utilityCost = parseFloat(document.getElementById('utilityCost').value) || 0;
+    let solarCost = parseFloat(document.getElementById('solarCost').value) || 0;
+    let batteryCost = parseFloat(document.getElementById('batteryCost').value) || 0;
+    let septicCost = parseFloat(document.getElementById('septicCost').value) || 0;
+    let insuranceCost = parseFloat(document.getElementById('insuranceCost').value) || 0;
+    let movingCost = parseFloat(document.getElementById('movingCost').value) || 0;
+    let monthlyUtilities = parseFloat(document.getElementById('monthlyUtilities').value) || 0;
+
+    let downPaymentPercent = parseFloat(document.getElementById('downPayment').value) || 0;
+    let interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    let loanYears = parseFloat(document.getElementById('loanYears').value) || 0;
+
+    let squareFeet = parseFloat(document.getElementById('squareFeet').value) || 0;
+
+    let airbnbIncome = parseFloat(document.getElementById('airbnbIncome').value) || 0;
+    let occupancyRate = parseFloat(document.getElementById('occupancyRate').value) || 0;
+
+    let state = document.getElementById('state').value;
+
+    // TOTAL PROJECT COST
+    let totalProject =
+        homeCost +
+        landCost +
+        utilityCost +
+        solarCost +
+        batteryCost +
+        septicCost +
+        movingCost;
+
+    // DOWN PAYMENT
+    let downPaymentAmount =
+        totalProject * (downPaymentPercent / 100);
+
+    // LOAN AMOUNT
+    let loanAmount =
+        totalProject - downPaymentAmount;
+
+    // MONTHLY PAYMENT
+    let monthlyInterest =
+        (interestRate / 100) / 12;
+
+    let totalPayments =
+        loanYears * 12;
+
+    let monthlyPayment =
+        (loanAmount * monthlyInterest) /
+        (1 - Math.pow(1 + monthlyInterest, -totalPayments));
+
+    // MONTHLY OPERATING COSTS
+    let monthlyOperating =
+        monthlyUtilities + (insuranceCost / 12);
+
+    // AIRBNB CALCULATIONS
+    let adjustedIncome =
+        airbnbIncome * (occupancyRate / 100);
+
+    let yearlyIncome =
+        adjustedIncome * 12;
+
+    let yearlyExpenses =
+        (monthlyOperating * 12) + (monthlyPayment * 12);
+
+    let yearlyCashFlow =
+        yearlyIncome - yearlyExpenses;
+
+    let roi =
+        (yearlyCashFlow / totalProject) * 100;
+
+    // PRICE PER FOOT
+    let pricePerFoot =
+        totalProject / squareFeet;
+
+    // SOLAR RECOMMENDATION
+    let solarMessage = "";
+
+    if(squareFeet <= 300){
+        solarMessage = "Recommended Solar Size: 3kW System";
+    }
+    else if(squareFeet <= 600){
+        solarMessage = "Recommended Solar Size: 5kW System";
+    }
+    else{
+        solarMessage = "Recommended Solar Size: 8kW+ System";
+    }
+
+    // ZONING MESSAGE
+    let zoningMessage = "";
+
+    if(state === "easy"){
+        zoningMessage = "Tiny home regulations are generally favorable.";
+    }
+    else if(state === "medium"){
+        zoningMessage = "Check county zoning carefully before purchase.";
+    }
+    else{
+        zoningMessage = "Tiny home regulations may be restrictive.";
+    }
+
+    // AFFORDABILITY CHECK
+    let affordability = "";
+
+    if(monthlyPayment < 1200){
+        affordability = "This project appears financially manageable.";
+    }
+    else{
+        affordability = "This project may stretch affordability.";
+    }
+
+    // DISPLAY RESULTS
+    document.getElementById('totalProject').innerHTML =
+        "<strong>Total Project Cost:</strong> $" + totalProject.toFixed(2);
+
+    document.getElementById('loanAmount').innerHTML =
+        "<strong>Estimated Loan Amount:</strong> $" + loanAmount.toFixed(2);
+
+    document.getElementById('monthlyPayment').innerHTML =
+        "<strong>Estimated Monthly Payment:</strong> $" + monthlyPayment.toFixed(2);
+
+    document.getElementById('monthlyOperating').innerHTML =
+        "<strong>Monthly Operating Costs:</strong> $" + monthlyOperating.toFixed(2);
+
+    document.getElementById('yearlyIncome').innerHTML =
+        "<strong>Estimated Yearly Airbnb Income:</strong> $" + yearlyIncome.toFixed(2);
+
+    document.getElementById('cashFlow').innerHTML =
+        "<strong>Estimated Yearly Cash Flow:</strong> $" + yearlyCashFlow.toFixed(2);
+
+    document.getElementById('roiEstimate').innerHTML =
+        "<strong>Estimated ROI:</strong> " + roi.toFixed(2) + "%";
+
+    document.getElementById('pricePerFoot').innerHTML =
+        "<strong>Cost Per Square Foot:</strong> $" + pricePerFoot.toFixed(2);
+
+    document.getElementById('solarRecommendation').innerHTML =
+        "<strong>" + solarMessage + "</strong>";
+
+    document.getElementById('zoningMessage').innerHTML =
+        "<strong>Zoning Insight:</strong> " + zoningMessage;
+
+    document.getElementById('affordability').innerHTML =
+        "<strong>Affordability Check:</strong> " + affordability;
+
+}
+
+calculateEverything();
+
+</script>
+
+</body>
+</html>
