@@ -1,382 +1,729 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>Tiny Home Ultimate Mega Calculator</title>
-
+<title>KneelWell — Ergonomic Kneeling Chairs & Accessories</title>
 <style>
-
-body{
-    font-family:Arial,sans-serif;
-    background:#f4f4f4;
-    margin:0;
-    padding:20px;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#2c6e49;
+  --primary-dark:#1b4332;
+  --accent:#f4a261;
+  --bg:#f8f9fa;
+  --card:#ffffff;
+  --text:#1a1a2e;
+  --muted:#6c757d;
+  --border:#e0e0e0;
+  --radius:12px;
 }
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
-.container{
-    max-width:1100px;
-    margin:auto;
-    background:#fff;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
+/* NAV */
+nav{background:var(--primary-dark);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.nav-inner{max-width:1200px;margin:auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;color:#fff;text-decoration:none}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.95rem;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.cart-btn{background:var(--accent);border:none;color:#fff;padding:8px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;display:flex;align-items:center;gap:6px;transition:background .2s}
+.cart-btn:hover{background:#e76f51}
+.cart-count{background:#fff;color:var(--accent);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,#52b788 100%);color:#fff;padding:80px 20px;text-align:center}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.15;margin-bottom:16px}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:1.15rem;max-width:600px;margin:0 auto 32px;opacity:.9}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s,transform .15s}
+.btn-primary:hover{background:#e76f51;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6);padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:border-color .2s,background .2s}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:2rem;font-weight:900;color:var(--accent)}
+.stat-label{font-size:.85rem;opacity:.8;margin-top:2px}
+
+/* BENEFITS STRIP */
+.benefits{background:#fff;border-bottom:1px solid var(--border)}
+.benefits-inner{max-width:1200px;margin:auto;padding:28px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.benefit{display:flex;align-items:center;gap:12px}
+.benefit-icon{font-size:1.6rem;flex-shrink:0}
+.benefit-text strong{display:block;font-size:.9rem}
+.benefit-text span{font-size:.82rem;color:var(--muted)}
+
+/* SECTION WRAPPER */
+.section{max-width:1200px;margin:auto;padding:60px 20px}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.section-header h2{font-size:1.8rem;font-weight:800}
+.section-header p{color:var(--muted);margin-top:4px;font-size:.95rem}
+.see-all{color:var(--primary);font-weight:600;text-decoration:none;font-size:.95rem;white-space:nowrap}
+.see-all:hover{text-decoration:underline}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.filter-chip{background:#fff;border:2px solid var(--border);color:var(--text);padding:7px 18px;border-radius:30px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.filter-chip:hover,.filter-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* PRODUCT GRID */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+.product-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.product-img{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative}
+.badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.badge.new{background:#2196f3}
+.badge.sale{background:#e53935}
+.badge.eco{background:var(--primary)}
+.product-body{padding:16px;display:flex;flex-direction:column;flex:1}
+.product-category{font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin-bottom:4px}
+.product-name{font-size:1rem;font-weight:700;margin-bottom:6px;line-height:1.3}
+.product-desc{font-size:.85rem;color:var(--muted);flex:1;margin-bottom:12px}
+.product-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.stars{color:#f4a261;font-size:.88rem}
+.review-count{color:var(--muted);font-size:.82rem;margin-left:4px}
+.price-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.price{font-size:1.3rem;font-weight:800;color:var(--primary-dark)}
+.price-orig{font-size:.95rem;color:var(--muted);text-decoration:line-through}
+.price-save{font-size:.78rem;background:#e8f5e9;color:var(--primary);padding:2px 8px;border-radius:10px;font-weight:700}
+.add-to-cart{background:var(--primary);color:#fff;border:none;width:100%;padding:11px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
+.add-to-cart:hover{background:var(--primary-dark)}
+.add-to-cart.added{background:#52b788}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+.feature-card{background:#fff;border-radius:var(--radius);padding:28px 24px;box-shadow:0 2px 10px rgba(0,0,0,.05);text-align:center}
+.feature-icon{font-size:2.4rem;margin-bottom:14px}
+.feature-card h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:.85rem;color:var(--muted);line-height:1.5}
+
+/* HOW IT WORKS */
+.how-bg{background:linear-gradient(to bottom,#fff,var(--bg))}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:32px;position:relative}
+.step{text-align:center;position:relative}
+.step-num{width:52px;height:52px;background:var(--primary);color:#fff;border-radius:50%;font-size:1.3rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.step h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.step p{font-size:.85rem;color:var(--muted)}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.testimonial-card{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative}
+.testimonial-card::before{content:'"';font-size:4rem;color:var(--primary);opacity:.15;position:absolute;top:10px;left:20px;line-height:1}
+.t-stars{color:#f4a261;margin-bottom:10px;font-size:.95rem}
+.t-text{font-size:.9rem;color:#444;line-height:1.6;margin-bottom:16px;font-style:italic}
+.t-author{display:flex;align-items:center;gap:10px}
+.t-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.95rem;flex-shrink:0}
+.t-name{font-weight:700;font-size:.9rem}
+.t-title{font-size:.8rem;color:var(--muted)}
+
+/* ACCESSORIES BANNER */
+.accessories-banner{background:linear-gradient(135deg,#1b4332,#2c6e49);color:#fff;border-radius:16px;padding:48px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.accessories-banner h2{font-size:1.8rem;font-weight:800;margin-bottom:8px}
+.accessories-banner p{opacity:.85;max-width:480px}
+.btn-white{background:#fff;color:var(--primary-dark);border:none;padding:14px 32px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer;transition:background .2s}
+.btn-white:hover{background:#e8f5e9}
+
+/* CTA */
+.cta-section{background:var(--accent);color:#fff;text-align:center;padding:60px 20px}
+.cta-section h2{font-size:2rem;font-weight:900;margin-bottom:12px}
+.cta-section p{font-size:1.05rem;opacity:.9;max-width:500px;margin:0 auto 28px}
+.cta-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:480px;margin:auto}
+.cta-form input{flex:1;min-width:200px;padding:13px 18px;border:none;border-radius:8px;font-size:.95rem}
+.cta-form button{background:var(--primary-dark);color:#fff;border:none;padding:13px 24px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;transition:background .2s}
+.cta-form button:hover{background:#0f2419}
+
+/* FOOTER */
+footer{background:var(--primary-dark);color:rgba(255,255,255,.8);padding:56px 20px 32px}
+.footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .logo{font-size:1.3rem;display:inline-block;margin-bottom:12px}
+.footer-brand p{font-size:.88rem;line-height:1.7;max-width:280px}
+footer h4{color:#fff;font-size:.95rem;font-weight:700;margin-bottom:16px}
+footer ul{list-style:none}
+footer ul li{margin-bottom:10px}
+footer ul a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.88rem;transition:color .2s}
+footer ul a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;gap:12px;font-size:.85rem}
+.footer-social{display:flex;gap:12px}
+.social-btn{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:.9rem;transition:background .2s}
+.social-btn:hover{background:var(--accent)}
+
+/* CART PANEL */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none}
+.cart-overlay.open{display:block}
+.cart-panel{position:fixed;right:0;top:0;bottom:0;width:380px;max-width:100vw;background:#fff;z-index:201;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column;box-shadow:-4px 0 20px rgba(0,0,0,.15)}
+.cart-panel.open{transform:translateX(0)}
+.cart-head{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-head h3{font-size:1.1rem;font-weight:800}
+.close-cart{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);line-height:1}
+.cart-items{flex:1;overflow-y:auto;padding:16px}
+.cart-empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.cart-empty .cart-empty-icon{font-size:3.5rem;margin-bottom:12px}
+.cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-item-img{width:56px;height:56px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;background:#f5f5f5}
+.cart-item-info{flex:1}
+.cart-item-name{font-size:.88rem;font-weight:700;line-height:1.3}
+.cart-item-price{font-size:.85rem;color:var(--primary);font-weight:700;margin-top:2px}
+.cart-item-controls{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.qty-btn:hover{background:var(--bg)}
+.qty-val{font-size:.88rem;font-weight:700;min-width:20px;text-align:center}
+.remove-item{background:none;border:none;color:#e53935;cursor:pointer;font-size:.78rem;margin-left:auto;font-weight:600}
+.cart-foot{padding:20px;border-top:1px solid var(--border)}
+.cart-total{display:flex;justify-content:space-between;font-weight:800;font-size:1.05rem;margin-bottom:16px}
+.checkout-btn{background:var(--primary);color:#fff;border:none;width:100%;padding:14px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.checkout-btn:hover{background:var(--primary-dark)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--primary-dark);color:#fff;padding:12px 20px;border-radius:10px;font-size:.9rem;font-weight:600;z-index:500;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);z-index:1}
+.modal-img{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:7rem;background:var(--bg);border-radius:16px 16px 0 0}
+.modal-body{padding:28px}
+.modal-body h2{font-size:1.5rem;font-weight:800;margin-bottom:6px}
+.modal-body .modal-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.modal-price{font-size:1.6rem;font-weight:900;color:var(--primary-dark)}
+.modal-orig{font-size:1rem;color:var(--muted);text-decoration:line-through}
+.modal-save{font-size:.82rem;background:#e8f5e9;color:var(--primary);padding:3px 10px;border-radius:10px;font-weight:700}
+.modal-desc{font-size:.92rem;color:#444;line-height:1.7;margin-bottom:20px}
+.specs-table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:.9rem}
+.specs-table tr{border-bottom:1px solid var(--border)}
+.specs-table td:first-child{font-weight:700;padding:8px 12px 8px 0;width:44%;color:var(--muted)}
+.specs-table td:last-child{padding:8px 0}
+.modal-add{background:var(--primary);color:#fff;border:none;width:100%;padding:14px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.modal-add:hover{background:var(--primary-dark)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .benefits-inner{grid-template-columns:1fr 1fr}
 }
-
-h1{
-    text-align:center;
-    margin-bottom:30px;
+@media(max-width:650px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .footer-inner{grid-template-columns:1fr}
+  .benefits-inner{grid-template-columns:1fr}
+  .accessories-banner{text-align:center}
+  .accessories-banner .btn-white{width:100%}
 }
-
-h2{
-    margin-top:40px;
-    border-bottom:1px solid #ddd;
-    padding-bottom:10px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.field{
-    display:flex;
-    flex-direction:column;
-}
-
-label{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-input,select{
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:16px;
-    margin-top:30px;
-    background:#222;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-size:18px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#444;
-}
-
-.results{
-    margin-top:40px;
-    background:#fafafa;
-    padding:20px;
-    border-radius:10px;
-}
-
-.result-item{
-    margin-bottom:15px;
-    font-size:18px;
-}
-
-.warning{
-    color:red;
-    font-weight:bold;
-}
-
-.good{
-    color:green;
-    font-weight:bold;
-}
-
-@media(max-width:700px){
-    .grid{
-        grid-template-columns:1fr;
-    }
-}
-
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Kneel<span>Well</span></a>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#accessories">Accessories</a></li>
+      <li><a href="#benefits">Why Kneeling</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="cart-btn" onclick="openCart()">
+      <span>&#128717;</span> Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-<h1>Tiny Home Ultimate Mega Calculator</h1>
+<!-- HERO -->
+<section class="hero">
+  <h1>Sit Better.<br>Work <span>Smarter.</span></h1>
+  <p>Ergonomic kneeling chairs designed to eliminate back pain, improve posture, and boost your daily productivity.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Chairs</button>
+    <button class="btn-outline" onclick="document.getElementById('benefits').scrollIntoView({behavior:'smooth'})">Learn More</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Happy Customers</div></div>
+    <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Average Rating</div></div>
+    <div class="stat"><div class="stat-num">30-Day</div><div class="stat-label">Free Returns</div></div>
+    <div class="stat"><div class="stat-num">95%</div><div class="stat-label">Pain Reduction</div></div>
+  </div>
+</section>
 
-<div class="grid">
-
-<div class="field">
-<label>Tiny Home Cost ($)</label>
-<input type="number" id="homeCost" value="60000">
+<!-- BENEFITS STRIP -->
+<div class="benefits">
+  <div class="benefits-inner">
+    <div class="benefit"><div class="benefit-icon">🚚</div><div class="benefit-text"><strong>Free Shipping</strong><span>On orders over $99</span></div></div>
+    <div class="benefit"><div class="benefit-icon">↩️</div><div class="benefit-text"><strong>30-Day Returns</strong><span>No questions asked</span></div></div>
+    <div class="benefit"><div class="benefit-icon">🛡️</div><div class="benefit-text"><strong>2-Year Warranty</strong><span>On all chairs</span></div></div>
+    <div class="benefit"><div class="benefit-icon">💬</div><div class="benefit-text"><strong>Expert Support</strong><span>Mon–Fri 9am–6pm EST</span></div></div>
+  </div>
 </div>
 
-<div class="field">
-<label>Land Cost ($)</label>
-<input type="number" id="landCost" value="30000">
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="section-header">
+    <div>
+      <h2>Kneeling Chairs</h2>
+      <p>Find the perfect ergonomic chair for your workspace</p>
+    </div>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" data-cat="all" onclick="filterProducts(this,'all')">All</button>
+    <button class="filter-chip" data-cat="classic" onclick="filterProducts(this,'classic')">Classic</button>
+    <button class="filter-chip" data-cat="adjustable" onclick="filterProducts(this,'adjustable')">Adjustable</button>
+    <button class="filter-chip" data-cat="premium" onclick="filterProducts(this,'premium')">Premium</button>
+    <button class="filter-chip" data-cat="portable" onclick="filterProducts(this,'portable')">Portable</button>
+    <button class="filter-chip" data-cat="eco" onclick="filterProducts(this,'eco')">Eco-Friendly</button>
+  </div>
+
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- WHY KNEELING -->
+<div class="how-bg">
+<section class="section" id="benefits">
+  <div class="section-header">
+    <div>
+      <h2>Why Choose a Kneeling Chair?</h2>
+      <p>Science-backed benefits for your back and productivity</p>
+    </div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🏃</div>
+      <h3>Active Sitting</h3>
+      <p>Engages your core and leg muscles while you work, burning up to 4x more calories than a standard chair.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🦴</div>
+      <h3>Spinal Alignment</h3>
+      <p>Naturally tilts your pelvis forward, aligning your spine in its healthy S-curve and reducing disc compression.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">😌</div>
+      <h3>Pain Relief</h3>
+      <p>Clinically shown to reduce lower back and hip pain by distributing body weight across multiple pressure points.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>Better Focus</h3>
+      <p>Improved oxygen flow from better posture leads to sharper concentration and reduced afternoon energy slumps.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚖️</div>
+      <h3>Weight Distribution</h3>
+      <p>Spreads 20% of your body weight to your shins and knees, taking the load off your lower back entirely.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💪</div>
+      <h3>Core Strengthening</h3>
+      <p>Daily use gradually strengthens abdominal and back muscles, making good posture effortless over time.</p>
+    </div>
+  </div>
+</section>
 </div>
 
-<div class="field">
-<label>Utility Hookups ($)</label>
-<input type="number" id="utilityCost" value="15000">
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <h2>Getting Started Is Easy</h2>
+      <p>From order to perfect posture in 4 steps</p>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Choose Your Chair</h3>
+      <p>Browse our range of kneeling chairs and select the model that fits your body size and work style.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Quick Delivery</h3>
+      <p>Free shipping on all orders over $99. Most chairs arrive within 3–5 business days, fully packaged.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Easy Assembly</h3>
+      <p>Our chairs assemble in under 15 minutes with the included tools. Clear illustrated instructions included.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Feel the Difference</h3>
+      <p>Most customers notice improved posture within the first week. Back pain starts fading within 30 days.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESSORIES -->
+<section class="section" id="accessories">
+  <div class="section-header">
+    <div>
+      <h2>Accessories & Add-ons</h2>
+      <p>Everything you need to complete your ergonomic setup</p>
+    </div>
+  </div>
+  <div class="products-grid" id="accessoriesGrid"></div>
+
+  <div class="accessories-banner" style="margin-top:40px">
+    <div>
+      <h2>Bundle & Save 20%</h2>
+      <p>Pair any kneeling chair with a floor mat and cushion replacement set for the ultimate ergonomic experience — and save 20% automatically.</p>
+    </div>
+    <button class="btn-white" onclick="showToast('Bundle discount applied at checkout!')">Shop Bundles</button>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="reviews">
+  <div class="section-header">
+    <div>
+      <h2>What Our Customers Say</h2>
+      <p>Real people, real results</p>
+    </div>
+  </div>
+  <div class="testimonials-grid" id="testimonialsGrid"></div>
+</section>
+
+<!-- CTA / NEWSLETTER -->
+<section class="cta-section" id="contact">
+  <h2>Get 10% Off Your First Order</h2>
+  <p>Join 12,000+ subscribers and receive exclusive deals, ergonomic tips, and new product alerts.</p>
+  <div class="cta-form">
+    <input type="email" id="emailInput" placeholder="Enter your email address">
+    <button onclick="handleSubscribe()">Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="logo">Kneel<span>Well</span></a>
+      <p>Premium ergonomic kneeling chairs handcrafted for modern workers. Better posture, less pain, more energy.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">Kneeling Chairs</a></li>
+        <li><a href="#accessories">Accessories</a></li>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Best Sellers</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Warranty</a></li>
+        <li><a href="#">Assembly Guides</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:auto">
+    <div class="footer-bottom">
+      <span>© 2026 KneelWell. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Instagram">&#9679;</a>
+        <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
+        <a href="#" class="social-btn" title="Pinterest">P</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <h3>Your Cart (<span id="cartItemCount">0</span> items)</h3>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <p>Your cart is empty</p>
+    </div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="checkout-btn" onclick="handleCheckout()">Proceed to Checkout →</button>
+  </div>
 </div>
 
-<div class="field">
-<label>Solar System Cost ($)</label>
-<input type="number" id="solarCost" value="12000">
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
 </div>
 
-<div class="field">
-<label>Battery Backup Cost ($)</label>
-<input type="number" id="batteryCost" value="7000">
-</div>
-
-<div class="field">
-<label>Septic System Cost ($)</label>
-<input type="number" id="septicCost" value="8000">
-</div>
-
-<div class="field">
-<label>Insurance Per Year ($)</label>
-<input type="number" id="insuranceCost" value="1500">
-</div>
-
-<div class="field">
-<label>Moving / Delivery Cost ($)</label>
-<input type="number" id="movingCost" value="5000">
-</div>
-
-<div class="field">
-<label>Monthly Utilities ($)</label>
-<input type="number" id="monthlyUtilities" value="250">
-</div>
-
-<div class="field">
-<label>Down Payment (%)</label>
-<input type="number" id="downPayment" value="10">
-</div>
-
-<div class="field">
-<label>Interest Rate (%)</label>
-<input type="number" id="interestRate" value="7">
-</div>
-
-<div class="field">
-<label>Loan Length (Years)</label>
-<input type="number" id="loanYears" value="20">
-</div>
-
-<div class="field">
-<label>Square Footage</label>
-<input type="number" id="squareFeet" value="400">
-</div>
-
-<div class="field">
-<label>Estimated Monthly Airbnb Income ($)</label>
-<input type="number" id="airbnbIncome" value="1800">
-</div>
-
-<div class="field">
-<label>Occupancy Rate (%)</label>
-<input type="number" id="occupancyRate" value="70">
-</div>
-
-<div class="field">
-<label>State</label>
-<select id="state">
-<option value="easy">Texas</option>
-<option value="medium">Oklahoma</option>
-<option value="hard">California</option>
-<option value="medium">Florida</option>
-<option value="easy">Tennessee</option>
-</select>
-</div>
-
-</div>
-
-<button onclick="calculateEverything()">
-Calculate Everything
-</button>
-
-<div class="results">
-
-<h2>Results</h2>
-
-<div class="result-item" id="totalProject"></div>
-<div class="result-item" id="loanAmount"></div>
-<div class="result-item" id="monthlyPayment"></div>
-<div class="result-item" id="monthlyOperating"></div>
-<div class="result-item" id="yearlyIncome"></div>
-<div class="result-item" id="cashFlow"></div>
-<div class="result-item" id="roiEstimate"></div>
-<div class="result-item" id="pricePerFoot"></div>
-<div class="result-item" id="solarRecommendation"></div>
-<div class="result-item" id="zoningMessage"></div>
-<div class="result-item" id="affordability"></div>
-
-</div>
-
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const chairs = [
+  {
+    id:1, name:"Classic Wooden Kneeling Chair", category:"classic",
+    price:189, emoji:"🪑", badge:"Best Seller", badgeClass:"",
+    stars:4.8, reviews:342,
+    desc:"Solid beech wood frame with dual density foam pads. Timeless design for any home or office.",
+    specs:{Material:"Solid Beech Wood",Cushion:"Dual-Density Foam",Height:"Adjustable 21\"–27\"","Max Weight":"275 lbs",Assembly:"15 min",Warranty:"2 Years"}
+  },
+  {
+    id:2, name:"Ergonomic Adjustable Kneeling Chair", category:"adjustable",
+    price:249, origPrice:289, emoji:"⚙️", badge:"Sale", badgeClass:"sale",
+    stars:4.9, reviews:518,
+    desc:"Full-range height and angle adjustment. Steel frame with breathable mesh cushions for all-day comfort.",
+    specs:{Material:"Steel Frame",Cushion:"Breathable Mesh",Height:"Adjustable 19\"–29\"","Max Weight":"330 lbs",Assembly:"20 min",Warranty:"2 Years"}
+  },
+  {
+    id:3, name:"Premium Memory Foam Kneeling Chair", category:"premium",
+    price:329, emoji:"💎", badge:"New", badgeClass:"new",
+    stars:4.9, reviews:127,
+    desc:"Luxury memory foam conforms to your body shape. Silent rolling casters and a sleek matte black finish.",
+    specs:{Material:"Powder-Coated Steel",Cushion:"3\" Memory Foam",Height:"Adjustable 20\"–28\"","Max Weight":"300 lbs",Assembly:"10 min",Warranty:"2 Years"}
+  },
+  {
+    id:4, name:"Portable Folding Kneeling Chair", category:"portable",
+    price:159, emoji:"🎒", badge:"Portable", badgeClass:"",
+    stars:4.6, reviews:203,
+    desc:"Folds flat in seconds for travel, storage, or multi-room use. Lightweight aluminum frame under 8 lbs.",
+    specs:{Material:"Aluminum Alloy",Cushion:"High-Density Foam",Height:"Fixed 24\"","Max Weight":"250 lbs",Weight:"7.8 lbs",Warranty:"1 Year"}
+  },
+  {
+    id:5, name:"Executive Leather Kneeling Chair", category:"premium",
+    price:399, origPrice:459, emoji:"🏆", badge:"Sale", badgeClass:"sale",
+    stars:4.8, reviews:89,
+    desc:"Top-grain leather upholstery with a solid walnut wood base. The statement piece for executive offices.",
+    specs:{Material:"Walnut Wood + Steel",Cushion:"Top-Grain Leather",Height:"Adjustable 22\"–30\"","Max Weight":"300 lbs",Assembly:"20 min",Warranty:"3 Years"}
+  },
+  {
+    id:6, name:"Kids Kneeling Chair", category:"classic",
+    price:129, emoji:"🧒", badge:"", badgeClass:"",
+    stars:4.7, reviews:156,
+    desc:"Designed for ages 6–14. Lightweight, easy to adjust, and available in four bright colors.",
+    specs:{Material:"Birch Wood",Cushion:"Soft EVA Foam",Height:"Adjustable 15\"–21\"","Max Weight":"165 lbs",Assembly:"10 min",Warranty:"1 Year"}
+  },
+  {
+    id:7, name:"Kneeling Chair with Back Support", category:"adjustable",
+    price:299, emoji:"🔒", badge:"New", badgeClass:"new",
+    stars:4.7, reviews:74,
+    desc:"Unique design combines kneeling posture with optional lumbar support for those transitioning from standard chairs.",
+    specs:{Material:"Steel + ABS Plastic",Cushion:"Contoured Memory Foam",Height:"Adjustable 20\"–28\"","Max Weight":"300 lbs",Assembly:"25 min",Warranty:"2 Years"}
+  },
+  {
+    id:8, name:"Bamboo Eco Kneeling Chair", category:"eco",
+    price:219, emoji:"🌿", badge:"Eco", badgeClass:"eco",
+    stars:4.8, reviews:98,
+    desc:"Sustainably harvested bamboo frame, recycled foam cushions, and water-based finishes. Carbon-neutral shipping.",
+    specs:{Material:"FSC Bamboo",Cushion:"Recycled Foam",Height:"Adjustable 20\"–26\"","Max Weight":"265 lbs",Assembly:"15 min",Warranty:"2 Years"}
+  },
+];
 
-function calculateEverything(){
+const accessories = [
+  {
+    id:101, name:"Memory Foam Cushion Set (Seat + Knee)", category:"accessory",
+    price:49, emoji:"🛋️", badge:"", badgeClass:"",
+    stars:4.9, reviews:431,
+    desc:"Universal replacement cushion set fits most kneeling chair brands. Soft memory foam with removable covers.",
+    specs:{Fit:"Universal",Foam:"2\" Memory Foam",Cover:"Removable & Washable","Seat Size":"14\"×14\"","Knee Size":"12\"×6\""}
+  },
+  {
+    id:102, name:"Anti-Fatigue Kneeling Chair Mat", category:"accessory",
+    price:39, emoji:"🟫", badge:"Best Seller", badgeClass:"",
+    stars:4.7, reviews:288,
+    desc:"Thick ergonomic mat cushions your hardwood or tile floor. Non-slip base, beveled edges, easy to clean.",
+    specs:{Size:"36\"×24\"",Thickness:"3/4\"",Material:"PVC Foam + Gel",Surface:"Textured Non-Slip",Warranty:"1 Year"}
+  },
+  {
+    id:103, name:"Chair Height Adjustment Tool Kit", category:"accessory",
+    price:19, emoji:"🔧", badge:"", badgeClass:"",
+    stars:4.6, reviews:112,
+    desc:"Complete toolkit with hex keys, cushion straps, and assembly hardware for all KneelWell chair models.",
+    specs:{Contents:"6 Hex Keys, Strap Set","Compatibility":"All KneelWell Models","Case":"Zippered Pouch"}
+  },
+  {
+    id:104, name:"Lumbar Support Pillow", category:"accessory",
+    price:35, emoji:"🫶", badge:"New", badgeClass:"new",
+    stars:4.8, reviews:67,
+    desc:"Attaches to any kneeling chair back or desk chair. Memory foam with adjustable strap for custom placement.",
+    specs:{Material:"Memory Foam",Size:"14\"×10\"×4\"",Attachment:"Adjustable Strap",Cover:"Washable Velvet"}
+  },
+];
 
-    let homeCost = parseFloat(document.getElementById('homeCost').value) || 0;
-    let landCost = parseFloat(document.getElementById('landCost').value) || 0;
-    let utilityCost = parseFloat(document.getElementById('utilityCost').value) || 0;
-    let solarCost = parseFloat(document.getElementById('solarCost').value) || 0;
-    let batteryCost = parseFloat(document.getElementById('batteryCost').value) || 0;
-    let septicCost = parseFloat(document.getElementById('septicCost').value) || 0;
-    let insuranceCost = parseFloat(document.getElementById('insuranceCost').value) || 0;
-    let movingCost = parseFloat(document.getElementById('movingCost').value) || 0;
-    let monthlyUtilities = parseFloat(document.getElementById('monthlyUtilities').value) || 0;
+// ─── CART ─────────────────────────────────────────────────────────────────────
+let cart = [];
 
-    let downPaymentPercent = parseFloat(document.getElementById('downPayment').value) || 0;
-    let interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
-    let loanYears = parseFloat(document.getElementById('loanYears').value) || 0;
-
-    let squareFeet = parseFloat(document.getElementById('squareFeet').value) || 0;
-
-    let airbnbIncome = parseFloat(document.getElementById('airbnbIncome').value) || 0;
-    let occupancyRate = parseFloat(document.getElementById('occupancyRate').value) || 0;
-
-    let state = document.getElementById('state').value;
-
-    // TOTAL PROJECT COST
-    let totalProject =
-        homeCost +
-        landCost +
-        utilityCost +
-        solarCost +
-        batteryCost +
-        septicCost +
-        movingCost;
-
-    // DOWN PAYMENT
-    let downPaymentAmount =
-        totalProject * (downPaymentPercent / 100);
-
-    // LOAN AMOUNT
-    let loanAmount =
-        totalProject - downPaymentAmount;
-
-    // MONTHLY PAYMENT
-    let monthlyInterest =
-        (interestRate / 100) / 12;
-
-    let totalPayments =
-        loanYears * 12;
-
-    let monthlyPayment =
-        (loanAmount * monthlyInterest) /
-        (1 - Math.pow(1 + monthlyInterest, -totalPayments));
-
-    // MONTHLY OPERATING COSTS
-    let monthlyOperating =
-        monthlyUtilities + (insuranceCost / 12);
-
-    // AIRBNB CALCULATIONS
-    let adjustedIncome =
-        airbnbIncome * (occupancyRate / 100);
-
-    let yearlyIncome =
-        adjustedIncome * 12;
-
-    let yearlyExpenses =
-        (monthlyOperating * 12) + (monthlyPayment * 12);
-
-    let yearlyCashFlow =
-        yearlyIncome - yearlyExpenses;
-
-    let roi =
-        (yearlyCashFlow / totalProject) * 100;
-
-    // PRICE PER FOOT
-    let pricePerFoot =
-        totalProject / squareFeet;
-
-    // SOLAR RECOMMENDATION
-    let solarMessage = "";
-
-    if(squareFeet <= 300){
-        solarMessage = "Recommended Solar Size: 3kW System";
-    }
-    else if(squareFeet <= 600){
-        solarMessage = "Recommended Solar Size: 5kW System";
-    }
-    else{
-        solarMessage = "Recommended Solar Size: 8kW+ System";
-    }
-
-    // ZONING MESSAGE
-    let zoningMessage = "";
-
-    if(state === "easy"){
-        zoningMessage = "Tiny home regulations are generally favorable.";
-    }
-    else if(state === "medium"){
-        zoningMessage = "Check county zoning carefully before purchase.";
-    }
-    else{
-        zoningMessage = "Tiny home regulations may be restrictive.";
-    }
-
-    // AFFORDABILITY CHECK
-    let affordability = "";
-
-    if(monthlyPayment < 1200){
-        affordability = "This project appears financially manageable.";
-    }
-    else{
-        affordability = "This project may stretch affordability.";
-    }
-
-    // DISPLAY RESULTS
-    document.getElementById('totalProject').innerHTML =
-        "<strong>Total Project Cost:</strong> $" + totalProject.toFixed(2);
-
-    document.getElementById('loanAmount').innerHTML =
-        "<strong>Estimated Loan Amount:</strong> $" + loanAmount.toFixed(2);
-
-    document.getElementById('monthlyPayment').innerHTML =
-        "<strong>Estimated Monthly Payment:</strong> $" + monthlyPayment.toFixed(2);
-
-    document.getElementById('monthlyOperating').innerHTML =
-        "<strong>Monthly Operating Costs:</strong> $" + monthlyOperating.toFixed(2);
-
-    document.getElementById('yearlyIncome').innerHTML =
-        "<strong>Estimated Yearly Airbnb Income:</strong> $" + yearlyIncome.toFixed(2);
-
-    document.getElementById('cashFlow').innerHTML =
-        "<strong>Estimated Yearly Cash Flow:</strong> $" + yearlyCashFlow.toFixed(2);
-
-    document.getElementById('roiEstimate').innerHTML =
-        "<strong>Estimated ROI:</strong> " + roi.toFixed(2) + "%";
-
-    document.getElementById('pricePerFoot').innerHTML =
-        "<strong>Cost Per Square Foot:</strong> $" + pricePerFoot.toFixed(2);
-
-    document.getElementById('solarRecommendation').innerHTML =
-        "<strong>" + solarMessage + "</strong>";
-
-    document.getElementById('zoningMessage').innerHTML =
-        "<strong>Zoning Insight:</strong> " + zoningMessage;
-
-    document.getElementById('affordability').innerHTML =
-        "<strong>Affordability Check:</strong> " + affordability;
-
+function addToCart(id){
+  const item = [...chairs,...accessories].find(p=>p.id===id);
+  if(!item) return;
+  const existing = cart.find(c=>c.id===id);
+  if(existing) existing.qty++;
+  else cart.push({...item, qty:1});
+  updateCartUI();
+  showToast(`${item.name} added to cart!`);
 }
 
-calculateEverything();
+function updateCartUI(){
+  const total = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent = total;
+  document.getElementById('cartItemCount').textContent = total;
+  const price = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('cartTotal').textContent = '$'+price.toFixed(2);
+  renderCartItems();
+}
 
+function renderCartItems(){
+  const el = document.getElementById('cartItems');
+  if(cart.length===0){
+    el.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty</p></div>';
+    return;
+  }
+  el.innerHTML = cart.map(item=>`
+    <div class="cart-item">
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${item.price}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+          <button class="remove-item" onclick="removeItem(${item.id})">Remove</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function changeQty(id,delta){
+  const item = cart.find(c=>c.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty<=0) cart = cart.filter(c=>c.id!==id);
+  updateCartUI();
+}
+
+function removeItem(id){
+  cart = cart.filter(c=>c.id!==id);
+  updateCartUI();
+}
+
+function openCart(){ document.getElementById('cartPanel').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart(){ document.getElementById('cartPanel').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+function handleCheckout(){ if(cart.length===0){showToast('Your cart is empty!');return;} showToast('Redirecting to checkout…'); }
+
+// ─── PRODUCTS ─────────────────────────────────────────────────────────────────
+const bgColors = ['#e8f5e9','#fff3e0','#e3f2fd','#fce4ec','#f3e5f5','#e0f7fa','#fff8e1','#e8eaf6'];
+
+function productCard(p, idx){
+  const bg = bgColors[idx % bgColors.length];
+  const badge = p.badge ? `<div class="badge ${p.badgeClass}">${p.badge}</div>` : '';
+  const origPrice = p.origPrice ? `<span class="price-orig">$${p.origPrice}</span><span class="price-save">Save $${p.origPrice-p.price}</span>` : '';
+  return `
+    <div class="product-card" data-cat="${p.category}">
+      <div class="product-img" style="background:${bg}">${badge}${p.emoji}</div>
+      <div class="product-body">
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-meta">
+          <span class="stars">${'★'.repeat(Math.floor(p.stars))}${p.stars%1?'½':''}</span>
+          <span class="review-count">(${p.reviews})</span>
+        </div>
+        <div class="price-row">
+          <span class="price">$${p.price}</span>${origPrice}
+        </div>
+        <button class="add-to-cart" id="btn-${p.id}" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>`;
+}
+
+function renderProducts(){
+  document.getElementById('productsGrid').innerHTML = chairs.map((c,i)=>productCard(c,i)).join('');
+  document.getElementById('accessoriesGrid').innerHTML = accessories.map((a,i)=>productCard(a,i)).join('');
+}
+
+function filterProducts(btn, cat){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#productsGrid .product-card').forEach(card=>{
+    card.style.display = (cat==='all'||card.dataset.cat===cat) ? '' : 'none';
+  });
+}
+
+// ─── TESTIMONIALS ─────────────────────────────────────────────────────────────
+const testimonials = [
+  {stars:5,text:"I've had chronic lower back pain for 7 years. After 3 weeks on my KneelWell Classic, the pain is almost completely gone. This chair changed my life.",name:"Sarah M.",title:"Graphic Designer",color:"#2c6e49"},
+  {stars:5,text:"I was skeptical at first but the adjustment period was only 2 days. Now I can't imagine going back to a regular office chair. My productivity has skyrocketed.",name:"James T.",title:"Software Engineer",color:"#f4a261"},
+  {stars:5,text:"Bought the Executive Leather for my home office — it looks stunning and works even better. The posture improvement was immediate and noticeable.",name:"Diana R.",title:"CEO & Entrepreneur",color:"#2196f3"},
+  {stars:4,text:"Solid quality, quick delivery, and the assembly guide was super clear. I went with the bamboo eco chair and love knowing it's sustainably made.",name:"Marcus L.",title:"UX Researcher",color:"#9c27b0"},
+  {stars:5,text:"My kids use the kids model for homework and their posture has improved dramatically. My pediatrician even noticed the difference!",name:"Amy W.",title:"Parent of 3",color:"#e53935"},
+  {stars:5,text:"As a physical therapist I recommend kneeling chairs to all my patients with lumbar issues. KneelWell's quality is head and shoulders above the competition.",name:"Dr. Phil K.",title:"Physical Therapist",color:"#00796b"},
+];
+
+function renderTestimonials(){
+  document.getElementById('testimonialsGrid').innerHTML = testimonials.map(t=>`
+    <div class="testimonial-card">
+      <div class="t-stars">${'★'.repeat(t.stars)}</div>
+      <p class="t-text">${t.text}</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background:${t.color}">${t.name.charAt(0)}</div>
+        <div><div class="t-name">${t.name}</div><div class="t-title">${t.title}</div></div>
+      </div>
+    </div>`).join('');
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ─── MISC ─────────────────────────────────────────────────────────────────────
+function handleSubscribe(){
+  const v = document.getElementById('emailInput').value.trim();
+  if(!v||!v.includes('@')){ showToast('Please enter a valid email.'); return; }
+  showToast('Welcome! Check your inbox for your 10% off code.');
+  document.getElementById('emailInput').value='';
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function toggleMenu(){
+  const links = document.querySelector('.nav-links');
+  if(links.style.display==='flex'){ links.style.display=''; }
+  else { links.style.cssText='display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#1b4332;padding:16px 20px;gap:16px'; }
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderProducts();
+renderTestimonials();
 </script>
-
 </body>
 </html>
